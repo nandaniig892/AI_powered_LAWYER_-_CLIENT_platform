@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer Registration - LegalConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #C9A227;
+            --secondary-color: #A9861F;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --bg-light: #F8FAFC;
+            --bg-white: #ffffff;
+            --border-color: #E5E7EB;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .register-container {
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .register-container h2 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .register-container > p {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-steps {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .step.active {
+            background: var(--primary-color);
+        }
+
+        .step.completed {
+            background: var(--success-color);
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .required {
+            color: var(--error-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-control.error {
+            border-color: var(--error-color);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background: var(--error-color);
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: var(--success-color);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 4px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+
+        .btn-back:hover {
+            background: var(--border-color);
+        }
+
+        .btn-next {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-home a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-home a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo-section">
+            <div class="logo-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <h2>Lawyer Registration</h2>
+            <p>Join LegalConnect and connect with clients</p>
+        </div>
+
+        <div class="form-steps">
+            <div class="step active" id="step1">1</div>
+            <div class="step" id="step2">2</div>
+        </div>
+
+        <form id="registerForm" action="LawyerRegisterServlet" method="POST">
+            <!-- Step 1: Personal Information -->
+            <div class="form-section active" id="section1">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                        <span class="error-message" id="firstNameError">First name is required</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                        <span class="error-message" id="lastNameError">Last name is required</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                    <span class="error-message" id="emailError">Please enter a valid email</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="+91 XXXXXXXXXX" required>
+                    <span class="error-message" id="phoneError">Please enter a valid phone number</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City <span class="required">*</span></label>
+                    <input type="text" id="city" name="city" class="form-control" required>
+                    <span class="error-message" id="cityError">City is required</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" class="form-control" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <span class="error-message" id="passwordError">Password must be at least 8 characters</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message" id="confirmPasswordError">Passwords do not match</span>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-next" onclick="nextStep()">Next Step →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Professional Information -->
+            <div class="form-section" id="section2">
+                <div class="form-group">
+                    <label for="barNumber">Bar Registration Number <span class="required">*</span></label>
+                    <input type="text" id="barNumber" name="barNumber" class="form-control" required>
+                    <span class="error-message" id="barNumberError">Bar number is required</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="stateLicensed">State Licensed <span class="required">*</span></label>
+                    <select id="stateLicensed" name="stateLicensed" class="form-control" required>
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    </select>
+                    <span class="error-message" id="stateLicensedError">Please select state</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="yearsExperience">Years of Experience <span class="required">*</span></label>
+                    <select id="yearsExperience" name="yearsExperience" class="form-control" required>
+                        <option value="">Select Experience</option>
+                        <option value="0-2 years">0-2 years</option>
+                        <option value="3-5 years">3-5 years</option>
+                        <option value="6-10 years">6-10 years</option>
+                        <option value="10+ years">10+ years</option>
+                    </select>
+                    <span class="error-message" id="yearsExperienceError">Please select experience</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialization">Primary Specialization <span class="required">*</span></label>
+                    <select id="specialization" name="specialization" class="form-control" required>
+                        <option value="">Select Specialization</option>
+                        <option value="Criminal Law">Criminal Law</option>
+                        <option value="Civil Law">Civil Law</option>
+                        <option value="Family Law">Family Law</option>
+                        <option value="Corporate Law">Corporate Law</option>
+                        <option value="Property Law">Property Law</option>
+                        <option value="Tax Law">Tax Law</option>
+                        <option value="Labour Law">Labour Law</option>
+                        <option value="Intellectual Property">Intellectual Property</option>
+                        <option value="Consumer Law">Consumer Law</option>
+                    </select>
+                    <span class="error-message" id="specializationError">Please select specialization</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="hourlyRate">Hourly Rate / Fee Range <span class="required">*</span></label>
+                    <select id="hourlyRate" name="hourlyRate" class="form-control" required>
+                        <option value="">Select Fee Range</option>
+                        <option value="₹500-1000/hour">₹500-1000/hour</option>
+                        <option value="₹1000-2000/hour">₹1000-2000/hour</option>
+                        <option value="₹2000-5000/hour">₹2000-5000/hour</option>
+                        <option value="₹5000+/hour">₹5000+/hour</option>
+                    </select>
+                    <span class="error-message" id="hourlyRateError">Please select fee range</span>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I certify that all information is accurate and agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Lawyer Code of Conduct</a>
+                    </label>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+                    <button type="submit" class="btn btn-submit" id="submitBtn">Register</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling.querySelector('i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('strengthBar');
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 1) {
+                strengthBar.classList.add('weak');
+            } else if (strength <= 3) {
+                strengthBar.classList.add('medium');
+            } else {
+                strengthBar.classList.add('strong');
+            }
+        });
+
+        function nextStep() {
+            if (validateStep1()) {
+                currentStep = 2;
+                document.getElementById('section1').classList.remove('active');
+                document.getElementById('section2').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('active');
+            }
+        }
+
+        function prevStep() {
+            currentStep = 1;
+            document.getElementById('section2').classList.remove('active');
+            document.getElementById('section1').classList.add('active');
+            document.getElementById('step1').classList.remove('completed');
+            document.getElementById('step2').classList.remove('active');
+        }
+
+        function validateStep1() {
+            let isValid = true;
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
+
+            const firstName = document.getElementById('firstName').value.trim();
+            if (firstName === '') {
+                showError('firstName', 'firstNameError');
+                isValid = false;
+            }
+
+            const lastName = document.getElementById('lastName').value.trim();
+            if (lastName === '') {
+                showError('lastName', 'lastNameError');
+                isValid = false;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('email', 'emailError');
+                isValid = false;
+            }
+
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                showError('phone', 'phoneError');
+                isValid = false;
+            }
+
+            const city = document.getElementById('city').value.trim();
+            if (city === '') {
+                showError('city', 'cityError');
+                isValid = false;
+            }
+
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                showError('password', 'passwordError');
+                isValid = false;
+            }
+
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                showError('confirmPassword', 'confirmPasswordError');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(fieldId, errorId) {
+            document.getElementById(fieldId).classList.add('error');
+            document.getElementById(errorId).classList.add('show');
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('terms').checked) {
+                alert('Please agree to the Terms of Service and Code of Conduct');
+                return;
+            }
+            
+            this.submit();
+        });
+    </script>
+</body>
+</html>
